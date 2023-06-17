@@ -1,0 +1,18 @@
+[package]
+name = "safetensors-cli"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/gzsombor/safetensors-cli"
+keywords = ["safetensors", "file-formats"]
+author = "Zsombor Gegesy <gzsombor@gmail.com>"
+description = "Command line tool to inspect files in safetensors format"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow="1.0"
+safetensors = "0.3.1"
+clap = { version = "4.3", features = ["derive"]}
+memmap2 = "0"
+
