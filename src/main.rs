@@ -1,6 +1,7 @@
 use anyhow::{anyhow, Context, Result};
 use clap::{Parser, Subcommand};
 use memmap2::Mmap;
+use pickle::DeOptions;
 use serde_pickle as pickle;
 use safetensors::{SafeTensors, Dtype};
 use std::{
@@ -46,24 +47,6 @@ impl std::fmt::Display for TorchTensorInfo {
     }
 }
 
-
-#[derive(Debug)]
-enum MyErrors {
-    RootNotADictionary,
-    MissingMeta,
-}
-
-impl std::fmt::Display for MyErrors {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::RootNotADictionary => write!(f, "Root object is not a Python dictionary"),
-            Self::MissingMeta => write!(f, "Missing _meta key!"),
-        }
-    }
-}
-
-impl std::error::Error for MyErrors {}
-
 fn load(path: &Path) -> Result<Mmap> {
     let file = File::open(path).context(format!("Failed to read file: {}", path.display()))?;
     let buffer =
@@ -105,7 +88,7 @@ where
 
     let version_file = data_pkl_file.replace("/data.pkl", "/version");
     let data_pkl_file = data_pkl_file.to_owned();
-    println!("version file: ${version_file} pickle: ${data_pkl_file}");
+    println!("version file: {version_file} pickle: {data_pkl_file}");
     let mut version = zip
         .by_name(&version_file)
         .context(format!(
@@ -169,7 +152,7 @@ where
             bin_file.display()
         ))?;
 
-    let decoded: pickle::Value = pickle::value_from_reader(pickle_file, Default::default())
+    let decoded: pickle::Value = pickle::value_from_reader(pickle_file, DeOptions::new().replace_globals_to_tuples())
         .context(format!(
             "Unable to decode pickle file {} in {}!",
             &pickle_file_name,
@@ -192,8 +175,8 @@ fn convert(bin_file: &Path) -> Result<()> {
 
     let (version, pickle_file) = get_pytorch_version(&bin_file, &mut zip)?;
     println!("Pytorch version: '{}' ({})", version, &pickle_file);
-    let pickled = get_pytorch_pickle(&bin_file, &mut zip, &pickle_file)?;
     zip.file_names().for_each(|name| println!("{}", &name));
+    let pickled = get_pytorch_pickle(&bin_file, &mut zip, &pickle_file)?;
     Ok(())
 }
 

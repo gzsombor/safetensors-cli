@@ -16,5 +16,5 @@ safetensors = "0.3.1"
 clap = { version = "4.3", features = ["derive"]}
 memmap2 = "0"
 zip = "0.6"
-serde-pickle = { git = "https://github.com/eiz/serde-pickle.git", branch="mack/persid" }
+serde-pickle = { git = "https://github.com/gzsombor/serde-pickle.git", branch="master" }
 
