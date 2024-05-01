@@ -14,7 +14,7 @@ description = "Command line tool to inspect files in safetensors format"
 anyhow="1.0"
 safetensors = "0.4.2"
 clap = { version = "4.5", features = ["derive"]}
-memmap2 = "0"
+memmap2 = "0.9.4"
 zip = "0.6"
 serde-pickle = { git = "https://github.com/gzsombor/serde-pickle.git", branch="master" }
 
