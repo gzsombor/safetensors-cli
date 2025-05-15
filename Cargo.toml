@@ -15,6 +15,6 @@ anyhow="1.0.82"
 safetensors = "0.4.3"
 clap = { version = "4.5.4", features = ["derive"]}
 memmap2 = "0.9.4"
-zip = "1.1.4"
+zip = "3.0.0"
 serde-pickle = { git = "https://github.com/gzsombor/serde-pickle.git", branch="master" }
 
